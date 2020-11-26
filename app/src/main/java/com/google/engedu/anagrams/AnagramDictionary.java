@@ -28,13 +28,31 @@ public class AnagramDictionary {
     private static final int DEFAULT_WORD_LENGTH = 3;
     private static final int MAX_WORD_LENGTH = 7;
     private Random random = new Random();
+    private ArrayList<String> wordList = new ArrayList<>();
 
     public AnagramDictionary(Reader reader) throws IOException {
         BufferedReader in = new BufferedReader(reader);
         String line;
+        wordList.clear();
         while((line = in.readLine()) != null) {
             String word = line.trim();
+            wordList.add(word);
         }
+    }
+
+    private String sortLetter(String input) {
+        char[] charArray = input.toCharArray();
+        int length = input.length();
+        for(int i=0; i < length; i++){
+            for(int j = i+1; j < length; j++){
+                if (charArray[i] > charArray[j]) {
+                    char temp = charArray[i];
+                    charArray[i] = charArray[j];
+                    charArray[j] = temp;
+                }
+            }
+        }
+        return new String(charArray);
     }
 
     public boolean isGoodWord(String word, String base) {
@@ -43,6 +61,13 @@ public class AnagramDictionary {
 
     public List<String> getAnagrams(String targetWord) {
         ArrayList<String> result = new ArrayList<String>();
+        for (String word : wordList) {
+            if (targetWord.length() == word.length()) {
+                if (sortLetter(targetWord).equals(sortLetter(word))) {
+                    result.add(word);
+                }
+            }
+        }
         return result;
     }
 
