@@ -34,6 +34,7 @@ public class AnagramDictionary {
     private final ArrayList<String> wordList = new ArrayList<>();
     private final HashSet<String> wordSet = new HashSet<>();
     private final HashMap<String, ArrayList<String>> lettersToWord = new HashMap<>();
+    private final HashMap<Integer, ArrayList<String>> sizeToWord = new HashMap<>();
 
     public AnagramDictionary(Reader reader) throws IOException {
         BufferedReader in = new BufferedReader(reader);
@@ -43,16 +44,31 @@ public class AnagramDictionary {
         lettersToWord.clear();
         while((line = in.readLine()) != null) {
             String word = line.trim();
-            String sortedWord = sortLetter(word);
-            if (lettersToWord.containsKey(sortedWord)) {
-                lettersToWord.get(sortedWord).add(word);
-            } else {
-                ArrayList<String> listWord = new ArrayList<>();
-                listWord.add(word);
-                lettersToWord.put(sortedWord, listWord);
-            }
+            setupLettersToWord(word);
+            setupSizeToWord(word);
             wordList.add(word);
             wordSet.add(word);
+        }
+    }
+
+    private void setupLettersToWord(String word) {
+        String sortedWord = sortLetter(word);
+        if (lettersToWord.containsKey(sortedWord)) {
+            lettersToWord.get(sortedWord).add(word);
+        } else {
+            ArrayList<String> listWord = new ArrayList<>();
+            listWord.add(word);
+            lettersToWord.put(sortedWord, listWord);
+        }
+    }
+
+    private void setupSizeToWord(String word) {
+        if (sizeToWord.containsKey(word.length())) {
+            sizeToWord.get(word.length()).add(word);
+        } else {
+            ArrayList<String> listWord = new ArrayList<>();
+            listWord.add(word);
+            sizeToWord.put(word.length(), listWord);
         }
     }
 
