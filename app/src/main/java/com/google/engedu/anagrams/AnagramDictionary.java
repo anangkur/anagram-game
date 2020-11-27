@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 public class AnagramDictionary {
@@ -71,7 +72,7 @@ public class AnagramDictionary {
     }
 
     public boolean isGoodWord(String word, String base) {
-        return true;
+        return wordSet.contains(word) && !word.contains(base);
     }
 
     public List<String> getAnagrams(String targetWord) {
@@ -88,10 +89,19 @@ public class AnagramDictionary {
 
     public List<String> getAnagramsWithOneMoreLetter(String word) {
         ArrayList<String> result = new ArrayList<String>();
+        for (Map.Entry<String, ArrayList<String>> entry : lettersToWord.entrySet()) {
+            if (entry.getKey().contains(sortLetter(word))) {
+                result.addAll(entry.getValue());
+            }
+        }
         return result;
     }
 
     public String pickGoodStarterWord() {
-        return "stop";
+        int randomPosition;
+        do {
+            randomPosition = new Random().nextInt(wordSet.size());
+        } while (getAnagramsWithOneMoreLetter(wordList.get(randomPosition)).size() < MIN_NUM_ANAGRAMS);
+        return wordList.get(randomPosition);
     }
 }
