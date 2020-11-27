@@ -98,6 +98,10 @@ public class AnagramDictionary {
     }
 
     public String pickGoodStarterWord() {
-        return "post";
+        int randomPosition;
+        do {
+            randomPosition = new Random().nextInt(wordSet.size());
+        } while (getAnagramsWithOneMoreLetter(wordList.get(randomPosition)).size() < MIN_NUM_ANAGRAMS);
+        return wordList.get(randomPosition);
     }
 }
