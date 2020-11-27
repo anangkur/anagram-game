@@ -30,6 +30,8 @@ public class AnagramDictionary {
     private static final int MIN_NUM_ANAGRAMS = 5;
     private static final int DEFAULT_WORD_LENGTH = 3;
     private static final int MAX_WORD_LENGTH = 7;
+
+    private int wordLength = DEFAULT_WORD_LENGTH;
     private final Random random = new Random();
     private final ArrayList<String> wordList = new ArrayList<>();
     private final HashSet<String> wordSet = new HashSet<>();
@@ -115,9 +117,23 @@ public class AnagramDictionary {
 
     public String pickGoodStarterWord() {
         int randomPosition;
+        String result;
+
         do {
-            randomPosition = random.nextInt(wordSet.size());
-        } while (getAnagramsWithOneMoreLetter(wordList.get(randomPosition)).size() < MIN_NUM_ANAGRAMS);
-        return wordList.get(randomPosition);
+            randomPosition = random.nextInt(sizeToWord.get(wordLength).size());
+            result = sizeToWord.get(wordLength).get(randomPosition);
+        } while (getAnagramsWithOneMoreLetter(result).size() < MIN_NUM_ANAGRAMS);
+
+        incrementWordLength();
+
+        return result;
+    }
+
+    private void incrementWordLength() {
+        if (wordLength < MAX_WORD_LENGTH) {
+            wordLength++;
+        } else {
+            wordLength = DEFAULT_WORD_LENGTH;
+        }
     }
 }
