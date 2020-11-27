@@ -71,7 +71,7 @@ public class AnagramDictionary {
     }
 
     public boolean isGoodWord(String word, String base) {
-        return true;
+        return wordSet.contains(word) && !word.contains(base);
     }
 
     public List<String> getAnagrams(String targetWord) {
@@ -92,6 +92,6 @@ public class AnagramDictionary {
     }
 
     public String pickGoodStarterWord() {
-        return "stop";
+        return "post";
     }
 }
