@@ -30,10 +30,13 @@ public class AnagramDictionary {
     private static final int MIN_NUM_ANAGRAMS = 5;
     private static final int DEFAULT_WORD_LENGTH = 3;
     private static final int MAX_WORD_LENGTH = 7;
-    private Random random = new Random();
-    private ArrayList<String> wordList = new ArrayList<>();
-    private HashSet<String> wordSet = new HashSet<>();
-    private HashMap<String, ArrayList<String>> lettersToWord = new HashMap<>();
+
+    private int wordLength = DEFAULT_WORD_LENGTH;
+    private final Random random = new Random();
+    private final ArrayList<String> wordList = new ArrayList<>();
+    private final HashSet<String> wordSet = new HashSet<>();
+    private final HashMap<String, ArrayList<String>> lettersToWord = new HashMap<>();
+    private final HashMap<Integer, ArrayList<String>> sizeToWord = new HashMap<>();
 
     public AnagramDictionary(Reader reader) throws IOException {
         BufferedReader in = new BufferedReader(reader);
@@ -43,16 +46,31 @@ public class AnagramDictionary {
         lettersToWord.clear();
         while((line = in.readLine()) != null) {
             String word = line.trim();
-            String sortedWord = sortLetter(word);
-            if (lettersToWord.containsKey(sortedWord)) {
-                lettersToWord.get(sortedWord).add(word);
-            } else {
-                ArrayList<String> listWord = new ArrayList<>();
-                listWord.add(word);
-                lettersToWord.put(sortedWord, listWord);
-            }
+            setupLettersToWord(word);
+            setupSizeToWord(word);
             wordList.add(word);
             wordSet.add(word);
+        }
+    }
+
+    private void setupLettersToWord(String word) {
+        String sortedWord = sortLetter(word);
+        if (lettersToWord.containsKey(sortedWord)) {
+            lettersToWord.get(sortedWord).add(word);
+        } else {
+            ArrayList<String> listWord = new ArrayList<>();
+            listWord.add(word);
+            lettersToWord.put(sortedWord, listWord);
+        }
+    }
+
+    private void setupSizeToWord(String word) {
+        if (sizeToWord.containsKey(word.length())) {
+            sizeToWord.get(word.length()).add(word);
+        } else {
+            ArrayList<String> listWord = new ArrayList<>();
+            listWord.add(word);
+            sizeToWord.put(word.length(), listWord);
         }
     }
 
@@ -76,7 +94,7 @@ public class AnagramDictionary {
     }
 
     public List<String> getAnagrams(String targetWord) {
-        ArrayList<String> result = new ArrayList<String>();
+        ArrayList<String> result = new ArrayList<>();
         for (String word : wordList) {
             if (targetWord.length() == word.length()) {
                 if (sortLetter(targetWord).equals(sortLetter(word))) {
@@ -88,7 +106,7 @@ public class AnagramDictionary {
     }
 
     public List<String> getAnagramsWithOneMoreLetter(String word) {
-        ArrayList<String> result = new ArrayList<String>();
+        ArrayList<String> result = new ArrayList<>();
         for (Map.Entry<String, ArrayList<String>> entry : lettersToWord.entrySet()) {
             if (entry.getKey().contains(sortLetter(word))) {
                 result.addAll(entry.getValue());
@@ -99,9 +117,23 @@ public class AnagramDictionary {
 
     public String pickGoodStarterWord() {
         int randomPosition;
+        String result;
+
         do {
-            randomPosition = new Random().nextInt(wordSet.size());
-        } while (getAnagramsWithOneMoreLetter(wordList.get(randomPosition)).size() < MIN_NUM_ANAGRAMS);
-        return wordList.get(randomPosition);
+            randomPosition = random.nextInt(sizeToWord.get(wordLength).size());
+            result = sizeToWord.get(wordLength).get(randomPosition);
+        } while (getAnagramsWithOneMoreLetter(result).size() < MIN_NUM_ANAGRAMS);
+
+        incrementWordLength();
+
+        return result;
+    }
+
+    private void incrementWordLength() {
+        if (wordLength < MAX_WORD_LENGTH) {
+            wordLength++;
+        } else {
+            wordLength = DEFAULT_WORD_LENGTH;
+        }
     }
 }
