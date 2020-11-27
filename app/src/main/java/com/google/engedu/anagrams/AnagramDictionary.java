@@ -19,6 +19,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 
@@ -29,13 +31,25 @@ public class AnagramDictionary {
     private static final int MAX_WORD_LENGTH = 7;
     private Random random = new Random();
     private ArrayList<String> wordList = new ArrayList<>();
+    private HashSet<String> wordSet = new HashSet<>();
+    private HashMap<String, ArrayList<String>> lettersToWord = new HashMap<>();
 
     public AnagramDictionary(Reader reader) throws IOException {
         BufferedReader in = new BufferedReader(reader);
         String line;
         wordList.clear();
+        wordSet.clear();
+        lettersToWord.clear();
         while((line = in.readLine()) != null) {
             String word = line.trim();
+            String sortedWord = sortLetter(word);
+            if (lettersToWord.containsKey(sortedWord)) {
+                lettersToWord.get(sortedWord).add(word);
+            } else {
+                ArrayList<String> listWord = new ArrayList<>();
+                listWord.add(word);
+                lettersToWord.put(sortedWord, listWord);
+            }
             wordList.add(word);
         }
     }
