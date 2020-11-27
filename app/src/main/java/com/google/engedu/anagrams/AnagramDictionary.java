@@ -30,10 +30,10 @@ public class AnagramDictionary {
     private static final int MIN_NUM_ANAGRAMS = 5;
     private static final int DEFAULT_WORD_LENGTH = 3;
     private static final int MAX_WORD_LENGTH = 7;
-    private Random random = new Random();
-    private ArrayList<String> wordList = new ArrayList<>();
-    private HashSet<String> wordSet = new HashSet<>();
-    private HashMap<String, ArrayList<String>> lettersToWord = new HashMap<>();
+    private final Random random = new Random();
+    private final ArrayList<String> wordList = new ArrayList<>();
+    private final HashSet<String> wordSet = new HashSet<>();
+    private final HashMap<String, ArrayList<String>> lettersToWord = new HashMap<>();
 
     public AnagramDictionary(Reader reader) throws IOException {
         BufferedReader in = new BufferedReader(reader);
@@ -76,7 +76,7 @@ public class AnagramDictionary {
     }
 
     public List<String> getAnagrams(String targetWord) {
-        ArrayList<String> result = new ArrayList<String>();
+        ArrayList<String> result = new ArrayList<>();
         for (String word : wordList) {
             if (targetWord.length() == word.length()) {
                 if (sortLetter(targetWord).equals(sortLetter(word))) {
@@ -88,7 +88,7 @@ public class AnagramDictionary {
     }
 
     public List<String> getAnagramsWithOneMoreLetter(String word) {
-        ArrayList<String> result = new ArrayList<String>();
+        ArrayList<String> result = new ArrayList<>();
         for (Map.Entry<String, ArrayList<String>> entry : lettersToWord.entrySet()) {
             if (entry.getKey().contains(sortLetter(word))) {
                 result.addAll(entry.getValue());
@@ -100,7 +100,7 @@ public class AnagramDictionary {
     public String pickGoodStarterWord() {
         int randomPosition;
         do {
-            randomPosition = new Random().nextInt(wordSet.size());
+            randomPosition = random.nextInt(wordSet.size());
         } while (getAnagramsWithOneMoreLetter(wordList.get(randomPosition)).size() < MIN_NUM_ANAGRAMS);
         return wordList.get(randomPosition);
     }
