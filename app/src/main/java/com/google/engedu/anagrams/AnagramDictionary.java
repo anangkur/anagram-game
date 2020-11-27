@@ -51,6 +51,7 @@ public class AnagramDictionary {
                 lettersToWord.put(sortedWord, listWord);
             }
             wordList.add(word);
+            wordSet.add(word);
         }
     }
 
