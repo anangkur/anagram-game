@@ -84,7 +84,7 @@ Distributed under the Apache License. See `LICENSE` for more information.
 
 Your Name - [@anang_kur](https://twitter.com/anang_kur) - anang@sampingan.co.id
 
-Project Link: [https://github.com/anangkur/repo_name](https://github.com/anangkur/anagram-game)
+Project Link: [https://github.com/anangkur/anagram-game](https://github.com/anangkur/anagram-game)
 
 
 
