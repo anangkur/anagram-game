@@ -82,7 +82,7 @@ Distributed under the Apache License. See `LICENSE` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [@anang_kur](https://twitter.com/anang_kur) - anang@sampingan.co.id
+Anang Kurniawan - [twitter: @anang_kur](https://twitter.com/anang_kur) - email: anang@sampingan.co.id
 
 Project Link: [https://github.com/anangkur/anagram-game](https://github.com/anangkur/anagram-game)
 
